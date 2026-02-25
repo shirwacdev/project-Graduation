@@ -1,22 +1,32 @@
-const express = require('express');
-const mongoose = require('mongoose');
-require('dotenv').config();
+const express = require("express");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 const app = express();
-const AdminRoutes = require("./routes/AdminRoutes")
-
-mongoose.connect(process.env.MONGO_URL).then( () =>{
-    console.log("db Connected")
-}).catch(err =>{
-    console.log(err)
-})
 
 
-app.get("/api", (req, res) =>{
-    res.send("Hello My Team")
-})
+app.use(express.json());
 
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port 8000`);
-})
+const AdminRoutes = require("./routes/AdminRoutes");
+
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("✅ Database Connected");
+  })
+  .catch((err) => {
+    console.error("❌ Database connection error:", err);
+  });
+
+
+app.get("/api", (req, res) => {
+  res.send("Hello My Team");
+});
+
+
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
+});
